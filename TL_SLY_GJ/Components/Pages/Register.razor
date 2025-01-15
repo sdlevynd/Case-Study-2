@@ -1,7 +1,33 @@
-﻿@page "/register"
+﻿@using TL_SLY_GJ.Models
+@using TL_SLY_GJ.Services
 
-<h3>Register</h3>
+@inject UserService UserService;
+
+@page "/register"
+
+<MudGrid Class="justify-center">
+    <MudItem xs="12" sm="7" Class="align-content-center">
+        <MudPaper Class="pa-4">
+            <MudForm>
+                <MudTextField T="string" Label="Email" @bind-Value=@register_user.Email/>
+                <MudTextField T="string" Label="Password" HelperText="Choose a strong password" InputType="InputType.Password" @bind-Value=@password/>
+                <MudTextField T="string" Label="Password" HelperText="Repeat the password" InputType="InputType.Password" />
+                <MudButton Variant="Variant.Filled" @onclick=@register>Register</MudButton>
+            </MudForm>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
 
 @code {
+    private User register_user;
+    private string password;
 
+    protected override async Task OnInitializedAsync(){
+        register_user = new User();
+    }
+    private async Task register(){
+        Console.WriteLine("register button clicked");
+        register_user.Password = Common.Utilities.hash_password(password);
+        await UserService.Register(register_user);
+    }
 }

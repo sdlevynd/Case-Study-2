@@ -1,11 +1,19 @@
-using TL_SLY_GJ.Components;
+﻿using TL_SLY_GJ.Components;
 using MudBlazor.Services;
+using Microsoft.EntityFrameworkCore;
+using TL_SLY_GJ.Models;
+using TL_SLY_GJ.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddDbContext<TlSlyGjContext>(options =>
+    options.UseMySql(builder.Configuration.GetConnectionString("MySqlConnection"),
+    new MySqlServerVersion(new Version(8, 0, 29))));
+builder.Services.AddScoped<UserService>();
 
 builder.Services.AddMudServices();
 

@@ -1,31 +1,37 @@
-﻿@page "/login"
+﻿@using TL_SLY_GJ.Models
+@using TL_SLY_GJ.Services
+
+@inject UserService UserService
+
+@page "/login"
+@rendermode InteractiveServer
 
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
 
-<MudGrid>
-    <MudItem xs="12" sm="7">
+<MudGrid Class="justify-center">
+    <MudItem xs="12" sm="7" Class="align-content-center">
         <MudPaper Class="pa-4">
-            <MudForm Spacing="spacing">
-                <MudTextField T="string" Label="Username" />
-                <MudTextField T="string" Label="Email" />
-                <MudTextField T="string" Label="Password" HelperText="Choose a strong password" InputType="InputType.Password" />
-                <MudTextField T="string" Label="Password" HelperText="Repeat the password" InputType="InputType.Password" />
-                <div class="d-flex">
-                    <MudRadioGroup T="string">
-                        <MudRadio Value="@("Personal")">Personal</MudRadio>
-                        <MudRadio Value="@("Professional")">Professional</MudRadio>
-                    </MudRadioGroup>
-                </div>
+            <MudForm>
+                <MudTextField T="string" Label="Email" @bind-Value=@login_user.Email/>
+                <MudTextField T="string" Label="Password" InputType="InputType.Password" @bind-Value=@password/>
+                <MudButton Variant="Variant.Filled" @onclick=@login>Log In</MudButton>
             </MudForm>
-        </MudPaper>
-    </MudItem>
-    <MudItem xs="12" sm="5">
-        <MudPaper Class="pa-4 mud-height-full">
-            <MudSlider @bind-Value="spacing" Min="0" Max="16" ValueLabel>Spacing between items</MudSlider>
         </MudPaper>
     </MudItem>
 </MudGrid>
 @code {
-    int spacing;
+    private User login_user;
+    private string password;
+
+    protected override async Task OnInitializedAsync(){
+        login_user = new User();
+    }
+
+    private async Task login(){
+        Console.WriteLine("login button clicked");
+        login_user.Password = Common.Utilities.hash_password(password);
+        bool success = await UserService.Login(login_user);
+        Console.WriteLine(success);
+    }
 }
