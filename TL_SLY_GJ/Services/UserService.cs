@@ -18,7 +18,7 @@ namespace TL_SLY_GJ.Services
 
         public async Task<bool> Login(User user)
         {
-            User foundUser = await _context.Users.FirstOrDefaultAsync(
+            User? foundUser = await _context.Users.FirstOrDefaultAsync(
                 u => u.Email == user.Email && u.Password == user.Password);
             return foundUser != null;
         }
