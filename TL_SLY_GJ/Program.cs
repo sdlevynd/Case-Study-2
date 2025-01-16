@@ -16,6 +16,7 @@ builder.Services.AddDbContext<TlSlyGjContext>(options =>
 
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<QuizService>();
+builder.Services.AddScoped<SubjectService>();
 
 builder.Services.AddMudServices();
 

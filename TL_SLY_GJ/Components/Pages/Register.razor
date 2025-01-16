@@ -9,9 +9,12 @@
     <MudItem xs="12" sm="7" Class="align-content-center">
         <MudPaper Class="pa-4">
             <MudForm>
-                <MudTextField T="string" Label="Email" @bind-Value=@register_user.Email/>
-                <MudTextField T="string" Label="Password" HelperText="Choose a strong password" InputType="InputType.Password" @bind-Value=@password/>
-                <MudTextField T="string" Label="Password" HelperText="Repeat the password" InputType="InputType.Password" />
+                <MudTextField T="string" Label="Email" Required="true" @bind-Value=@register_user.Email />
+                <MudTextField T="string" Label="Password" Required="true" HelperText="Choose a strong password" 
+                            InputType="InputType.Password" @bind-Value=@password @ref="pwField1"
+                            Validation="@(new Func<string, string>(PasswordMatch))" />
+                <MudTextField T="string" Label="Password" Required="true" HelperText="Repeat the password" 
+                            InputType="InputType.Password" />
                 <MudButton Variant="Variant.Filled" @onclick=@register>Register</MudButton>
             </MudForm>
         </MudPaper>
@@ -22,6 +25,8 @@
     private User register_user;
     private string password;
 
+    MudTextField<string> pwField1;
+
     protected override async Task OnInitializedAsync(){
         register_user = new User();
     }
@@ -29,5 +34,12 @@
         Console.WriteLine("register button clicked");
         register_user.Password = Common.Utilities.hash_password(password);
         await UserService.Register(register_user);
+    }
+
+    private string PasswordMatch(string arg)
+    {
+        if (pwField1.Value != arg)
+            return "Passwords don't match";
+        return null;
     }
 }

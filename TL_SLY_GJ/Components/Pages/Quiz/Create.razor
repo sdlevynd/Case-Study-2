@@ -1,0 +1,81 @@
+﻿@using TL_SLY_GJ.Models
+@using TL_SLY_GJ.Services
+@inject QuizService QuizService
+
+@rendermode InteractiveServer
+
+@page "/quiz/create"
+
+<h3>Create</h3>
+
+<MudButton Variant="Variant.Filled" @onclick=@AddQuestion>Add New Question</MudButton>
+<MudButton Variant="Variant.Filled" @onclick=@SaveQuiz>Save Quiz</MudButton>
+
+<MudGrid Class="justify-center">
+    @if (newQuiz != null)
+    {
+        <MudItem xs="12">
+            <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
+                <MudTextField T="string" Label="Question Text" Class="mt-3" @bind-Value=@newQuiz.Name/>
+            </MudPaper>
+        </MudItem>
+        int count = 0;
+        @foreach (Question question in newQuestions)
+        {
+            count++;
+            Question thisQuestion = question;
+            <MudItem xs="12" sm="7" Class="align-content-center">
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
+                            Question @count
+                            <MudTextField T="string" Label="Question Text" Class="mt-3" @bind-Value=@question.QuestionText />
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="6">
+                        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
+                            <MudTextField T="string" Label="Answer 1" Class="mt-3" @bind-Value=@question.Answer1 />
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="6">
+                        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
+                            <MudTextField T="string" Label="Answer 2" Class="mt-3" @bind-Value=@question.Answer2 />
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="6">
+                        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
+                            <MudTextField T="string" Label="Answer 3" Class="mt-3" @bind-Value=@question.Answer3 />
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="6">
+                        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
+                            <MudTextField T="string" Label="Answer 3" Class="mt-3" @bind-Value=@question.Answer4 />
+                        </MudPaper>
+                    </MudItem>
+                </MudGrid>
+            </MudItem>
+
+        }
+    }
+</MudGrid>
+
+
+@code {
+    Quiz newQuiz;
+    List<Question> newQuestions;
+
+    protected override async Task OnInitializedAsync()
+    {
+        newQuiz = new Quiz();
+        newQuestions = new List<Question>();
+    }
+
+    private void AddQuestion(){
+        newQuestions.Add(new Question());
+    }
+    private async Task SaveQuiz(){
+        await QuizService.AddQuizAsync(newQuiz, newQuestions);
+        newQuiz = new Quiz();
+        newQuestions.Clear();
+    }
+}

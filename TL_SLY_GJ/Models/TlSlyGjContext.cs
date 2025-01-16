@@ -41,9 +41,7 @@ public partial class TlSlyGjContext : DbContext
 
             entity.HasIndex(e => e.QuizId, "question_fk1_idx");
 
-            entity.Property(e => e.QuestionId)
-                .ValueGeneratedNever()
-                .HasColumnName("question_id");
+            entity.Property(e => e.QuestionId).HasColumnName("question_id");
             entity.Property(e => e.Answer1)
                 .HasMaxLength(45)
                 .HasColumnName("answer_1");
@@ -65,7 +63,7 @@ public partial class TlSlyGjContext : DbContext
             entity.HasOne(d => d.Quiz).WithMany(p => p.Questions)
                 .HasForeignKey(d => d.QuizId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("question_fk1");
+                .HasConstraintName("question_fk");
         });
 
         modelBuilder.Entity<Quiz>(entity =>
@@ -78,9 +76,7 @@ public partial class TlSlyGjContext : DbContext
 
             entity.HasIndex(e => e.SubjectId, "quiz_fk2_idx");
 
-            entity.Property(e => e.QuizId)
-                .ValueGeneratedNever()
-                .HasColumnName("quiz_id");
+            entity.Property(e => e.QuizId).HasColumnName("quiz_id");
             entity.Property(e => e.Name)
                 .HasMaxLength(45)
                 .HasColumnName("name");
@@ -89,12 +85,10 @@ public partial class TlSlyGjContext : DbContext
 
             entity.HasOne(d => d.Subject).WithMany(p => p.Quizzes)
                 .HasForeignKey(d => d.SubjectId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("quiz_fk2");
 
             entity.HasOne(d => d.User).WithMany(p => p.Quizzes)
                 .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("quiz_fk1");
         });
 

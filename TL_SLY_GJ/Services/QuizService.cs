@@ -27,5 +27,18 @@ namespace TL_SLY_GJ.Services
         {
             return await _context.Quizzes.Where(q => q.UserId == userId).ToListAsync();
         }
+        public async Task AddQuizAsync(Quiz quiz, List<Question> Questions)
+        {
+            Console.WriteLine(quiz.QuizId);
+            await _context.Quizzes.AddAsync(quiz);
+            await _context.SaveChangesAsync();
+            Console.WriteLine(quiz.QuizId);
+            foreach (Question question in Questions)
+            {
+                question.QuizId = quiz.QuizId;
+                await _context.Questions.AddAsync(question);
+            }
+            await _context.SaveChangesAsync();
+        }
     }
 }
