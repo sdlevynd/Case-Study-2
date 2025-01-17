@@ -21,8 +21,8 @@
     </MudItem>
 </MudGrid>
 @code {
-    private User login_user;
-    private string password;
+    private User login_user = new User();
+    private string password = "";
 
     protected override async Task OnInitializedAsync(){
         login_user = new User();

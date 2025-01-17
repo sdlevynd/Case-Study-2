@@ -24,7 +24,18 @@
         {
             count++;
             Question thisQuestion = question;
-            <MudItem xs="12" sm="7" Class="align-content-center">
+            <MudItem xs="12" sm="7">
+                <MudCard>
+                    <MudCardContent>
+                        <MudTextField Label="Question Text" HelperText="Max. 8 characters"
+                                      @bind-Value=@thisQuestion.QuestionText/>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+            @* <MudItem xs="12" sm="7" Class="align-content-center">
                 <MudGrid>
                     <MudItem xs="12">
                         <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
@@ -53,7 +64,7 @@
                         </MudPaper>
                     </MudItem>
                 </MudGrid>
-            </MudItem>
+            </MudItem> *@
 
         }
     }
