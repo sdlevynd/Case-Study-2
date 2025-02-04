@@ -1,7 +1,20 @@
-﻿@page "/"
+﻿@using TL_SLY_GJ.Common
+@using TL_SLY_GJ.Services
+
+@inject UserSession UserSession
+@inject UserService UserService
+
+@page "/"
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Hello @name </h1>
 
 Welcome to your new app.
+
+@code{
+    string name = "";
+    protected override async Task OnInitializedAsync(){
+        name = await UserService.GetEmail(UserSession.userId);
+    }
+}

@@ -1,7 +1,9 @@
 ﻿@using TL_SLY_GJ.Models
 @using TL_SLY_GJ.Services
+@using TL_SLY_GJ.Common
 
 @inject UserService UserService
+@inject UserSession UserSession
 
 @page "/login"
 @rendermode InteractiveServer
@@ -31,7 +33,10 @@
     private async Task login(){
         Console.WriteLine("login button clicked");
         login_user.Password = Common.Utilities.hash_password(password);
-        bool success = await UserService.Login(login_user);
-        Console.WriteLine(success);
+        int userid = await UserService.Login(login_user);
+        if (userid != -1)
+        {
+            UserSession.userId = userid;
+        }
     }
 }

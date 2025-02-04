@@ -1,6 +1,7 @@
 ﻿@using TL_SLY_GJ.Models
 @using TL_SLY_GJ.Services
 
+@inject NavigationManager NavigationManager
 @inject UserService UserService;
 
 @page "/register"
@@ -11,10 +12,10 @@
             <MudForm>
                 <MudTextField T="string" Label="Email" Required="true" @bind-Value=@register_user.Email />
                 <MudTextField T="string" Label="Password" Required="true" HelperText="Choose a strong password" 
-                            InputType="InputType.Password" @bind-Value=@password @ref="pwField1"
-                            Validation="@(new Func<string, string>(PasswordMatch))" />
+                InputType="InputType.Password" @bind-Value=@password @ref="pwField1"
+                Validation="@(new Func<string, string>(PasswordMatch))" />
                 <MudTextField T="string" Label="Password" Required="true" HelperText="Repeat the password" 
-                            InputType="InputType.Password" />
+                InputType="InputType.Password" />
                 <MudButton Variant="Variant.Filled" @onclick=@register>Register</MudButton>
             </MudForm>
         </MudPaper>
@@ -33,7 +34,15 @@
     private async Task register(){
         Console.WriteLine("register button clicked");
         register_user.Password = Common.Utilities.hash_password(password);
-        await UserService.Register(register_user);
+        bool success = await UserService.Register(register_user);
+        if (success)
+        {
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            Console.WriteLine("Could not register user...");
+        }
     }
 
     private string PasswordMatch(string arg)

@@ -3,6 +3,7 @@ using MudBlazor.Services;
 using Microsoft.EntityFrameworkCore;
 using TL_SLY_GJ.Models;
 using TL_SLY_GJ.Services;
+using TL_SLY_GJ.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddDbContext<TlSlyGjContext>(options =>
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<QuizService>();
 builder.Services.AddScoped<SubjectService>();
+builder.Services.AddSingleton<UserSession>();
 
 builder.Services.AddMudServices();
 
